@@ -1,0 +1,5 @@
+{
+  "framework": "vite",
+  "buildCommand": "pnpm run build:pwa && mv frontend-dist/standalone.html frontend-dist/index.html",
+  "outputDirectory": "frontend-dist"
+}
