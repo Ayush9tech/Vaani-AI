@@ -1,5 +1,7 @@
 # Vaani AI
 
+**🚀 Live Deployment:** [https://vaani-ai-rho.vercel.app](https://vaani-ai-rho.vercel.app)
+
 A bilingual, voice-first interview-readiness PWA for an NCS-focused Ministry of Labour & Employment Ideathon proposal. Independent prototype; no government affiliation or live NCS connection is claimed.
 
 ## Start the full stack
