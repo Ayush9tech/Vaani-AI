@@ -1,0 +1,25 @@
+import type {AudioMetrics,Lang} from './data';
+export interface SpeechAdapter {readonly name:string;supported():boolean;speak(text:string,lang:Lang,onEnd?:()=>void):void;stopSpeaking():void;listen(lang:Lang,onText:(text:string)=>void,onEnd:(m:Omit<AudioMetrics,'wpm'|'fillerCount'>)=>void,onError:(message:string)=>void):Promise<void>;stop():void;clear():void;}
+// Implement this interface for Bhashini/Whisper. Production adapters require an explicit processor notice.
+export class BrowserSpeechAdapter implements SpeechAdapter{
+ readonly name='Web Speech API'; private recognition:any;private stream:MediaStream|null=null;private context:AudioContext|null=null;private timer:ReturnType<typeof setInterval>|null=null;private generation=0;private dispose:()=>void=()=>{};
+ supported(){return typeof window!=='undefined'&&!!((window as any).SpeechRecognition||(window as any).webkitSpeechRecognition)&&!!navigator.mediaDevices?.getUserMedia;}
+ speak(text:string,lang:Lang,onEnd?:()=>void){if(!('speechSynthesis'in window)){onEnd?.();return;}this.stopSpeaking();const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang==='hi'?'hi-IN':'en-IN';utterance.rate=.92;const voice=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(lang==='hi'?'hi':'en-in'));if(voice)utterance.voice=voice;utterance.onend=()=>onEnd?.();utterance.onerror=()=>onEnd?.();speechSynthesis.speak(utterance);}
+ stopSpeaking(){if(typeof window!=='undefined'&&'speechSynthesis'in window)speechSynthesis.cancel();}
+ async listen(lang:Lang,onText:(text:string)=>void,onEnd:(m:Omit<AudioMetrics,'wpm'|'fillerCount'>)=>void,onError:(message:string)=>void){
+  this.stop();this.stopSpeaking();const generation=++this.generation;if(!this.supported())throw new Error('Speech recognition is unavailable here. You can type your answer, or try Chrome on a secure connection.');
+  try{const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false});if(generation!==this.generation){stream.getTracks().forEach(t=>t.stop());return;}this.stream=stream;
+  const Ctx=window.AudioContext||(window as any).webkitAudioContext;this.context=new Ctx();const analyser=this.context!.createAnalyser();analyser.fftSize=2048;this.context!.createMediaStreamSource(stream).connect(analyser);
+  const samples=new Float32Array(analyser.fftSize),pitches:number[]=[];let quietFrames=0,pauses=0,voicedFrames=0,started=performance.now(),wasVoice=false,ended=false;
+  this.timer=setInterval(()=>{analyser.getFloatTimeDomainData(samples);const rms=Math.sqrt(samples.reduce((a,b)=>a+b*b,0)/samples.length);if(rms<.012){quietFrames++;if(wasVoice&&quietFrames===8){pauses++;wasVoice=false;}}else{voicedFrames++;quietFrames=0;wasVoice=true;if(pitches.length<3600){const rate=this.context?.sampleRate||48000;let best=0,lagBest=0;const stride=4;for(let lag=Math.floor(rate/350);lag<Math.floor(rate/80);lag+=stride){let sum=0,norm=0;for(let i=0;i<samples.length-lag;i+=stride){sum+=samples[i]*samples[i+lag];norm+=samples[i]*samples[i];}const corr=norm?sum/norm:0;if(corr>best){best=corr;lagBest=lag;}}if(best>.7&&lagBest)pitches.push(rate/lagBest);}}},100);
+  const finish=()=>{if(ended)return;ended=true;const duration=(performance.now()-started)/1000;const mean=pitches.reduce((a,b)=>a+b,0)/(pitches.length||1);const pitchVariance=pitches.length>=12?Math.round(pitches.reduce((a,b)=>a+(b-mean)**2,0)/pitches.length):null;if(generation===this.generation){this.release();onEnd({duration,pauses,pitchVariance,voicedFrames});}pitches.length=0;samples.fill(0);};this.dispose=finish;
+  const Recognition=(window as any).SpeechRecognition||(window as any).webkitSpeechRecognition;const rec=new Recognition();this.recognition=rec;rec.lang=lang==='hi'?'hi-IN':'en-IN';rec.continuous=true;rec.interimResults=true;
+  rec.onresult=(e:any)=>{let text='';for(let i=0;i<e.results.length;i++)text+=e.results[i][0].transcript+' ';onText(text.trim());};
+  rec.onerror=(e:any)=>{if(e.error!=='aborted')onError(e.error==='not-allowed'?'Microphone access was not allowed. Your typed answer works too.':e.error==='network'?'Speech service needs a connection. Please type your answer for this rep.':'Could not hear clearly. Try again or type your answer.');finish();};rec.onend=finish;rec.start();
+  }catch(e){this.release();throw e;}
+ }
+ private release(){if(this.timer)clearInterval(this.timer);this.timer=null;this.stream?.getTracks().forEach(t=>t.stop());this.stream=null;void this.context?.close();this.context=null;}
+ stop(){try{this.recognition?.stop();}catch{}this.dispose();this.recognition=null;this.dispose=()=>{};this.release();}
+ clear(){this.generation++;try{this.recognition?.abort();}catch{}this.recognition=null;this.dispose();this.dispose=()=>{};this.release();this.stopSpeaking();}
+}
+export function withTranscriptMetrics(text:string,m:Omit<AudioMetrics,'wpm'|'fillerCount'>):AudioMetrics{return {...m,wpm:Math.round(text.trim().split(/\s+/).filter(Boolean).length/Math.max(1,m.duration)*60),fillerCount:(text.toLowerCase().match(/\b(um|uh|erm|basically|actually)\b|मतलब|यानी/g)||[]).length};}

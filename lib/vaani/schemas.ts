@@ -1,0 +1,10 @@
+import {z} from 'zod';
+export const score=z.number().int().min(0).max(100);
+export const questionSchema=z.object({id:z.string().max(20),kind:z.enum(['introduction','technical','behavioral']),text:z.string().min(8).max(700),hint:z.string().max(500),model:z.string().max(1600)}).strict();
+export const feedbackSchema=z.object({content:score,clarity:score,confidence:score.nullable(),overall:score,tip:z.string().min(10).max(600),strength:z.string().min(5).max(600),model:z.string().max(1600),star:z.object({situation:z.boolean(),task:z.boolean(),action:z.boolean(),result:z.boolean()}).strict(),source:z.enum(['demo','llm'])}).strict();
+export const fitSchema=z.object({score,matched:z.array(z.string()).max(12),gaps:z.array(z.string()).max(12),tip:z.string().min(10).max(600),source:z.enum(['demo','llm'])}).strict();
+export const sessionSchema=z.object({id:z.string().uuid(),roleId:z.string().max(40),roleTitle:z.string().max(100),date:z.string().datetime(),mode:z.enum(['text','voice','ivr','scenario']),score,content:score,clarity:score,confidence:score.nullable(),completed:z.number().int().min(1).max(7)}).strict();
+const num={type:'integer',minimum:0,maximum:100};const str={type:'string'};const bool={type:'boolean'};
+function obj(properties:Record<string,unknown>){return {type:'object',properties,required:Object.keys(properties),additionalProperties:false};}
+const question=obj({id:str,kind:{type:'string',enum:['introduction','technical','behavioral']},text:str,hint:str,model:str});
+export const jsonSchemas={questions:obj({questions:{type:'array',items:question,minItems:7,maxItems:7}}),grade:obj({content:num,clarity:num,confidence:{anyOf:[num,{type:'null'}]},overall:num,tip:str,strength:str,model:str,star:obj({situation:bool,task:bool,action:bool,result:bool}),source:{type:'string',enum:['llm']}}),fit:obj({score:num,matched:{type:'array',items:str},gaps:{type:'array',items:str},tip:str,source:{type:'string',enum:['llm']}}),scenario:obj({score:num,tip:str,source:{type:'string',enum:['llm']}})};

@@ -1,0 +1,962 @@
+[
+  {
+    "id": "role-1",
+    "title": "Retail Sales Associate",
+    "titleHi": "रिटेल सेल्स एसोसिएट",
+    "sector": "Retail",
+    "sectorHi": "रिटेल",
+    "context": "helping a customer find the right product",
+    "contextHi": "ग्राहक को सही सामान चुनने में मदद करना",
+    "skills": [
+      "Customer service",
+      "Communication",
+      "Billing",
+      "Stock management"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "बातचीत",
+      "बिलिंग",
+      "स्टॉक प्रबंधन"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹12,000–17,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-2",
+    "title": "Cashier",
+    "titleHi": "कैशियर",
+    "sector": "Retail",
+    "sectorHi": "रिटेल",
+    "context": "helping a customer find the right product",
+    "contextHi": "ग्राहक को सही सामान चुनने में मदद करना",
+    "skills": [
+      "Customer service",
+      "Communication",
+      "Billing",
+      "Stock management"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "बातचीत",
+      "बिलिंग",
+      "स्टॉक प्रबंधन"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹13,000–18,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-3",
+    "title": "Store Assistant",
+    "titleHi": "स्टोर सहायक",
+    "sector": "Retail",
+    "sectorHi": "रिटेल",
+    "context": "helping a customer find the right product",
+    "contextHi": "ग्राहक को सही सामान चुनने में मदद करना",
+    "skills": [
+      "Customer service",
+      "Communication",
+      "Billing",
+      "Stock management"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "बातचीत",
+      "बिलिंग",
+      "स्टॉक प्रबंधन"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹14,000–19,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-4",
+    "title": "Inventory Assistant",
+    "titleHi": "इन्वेंटरी सहायक",
+    "sector": "Retail",
+    "sectorHi": "रिटेल",
+    "context": "helping a customer find the right product",
+    "contextHi": "ग्राहक को सही सामान चुनने में मदद करना",
+    "skills": [
+      "Customer service",
+      "Communication",
+      "Billing",
+      "Stock management"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "बातचीत",
+      "बिलिंग",
+      "स्टॉक प्रबंधन"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹15,000–20,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-5",
+    "title": "Visual Merchandiser",
+    "titleHi": "विज़ुअल मर्चेंडाइज़र",
+    "sector": "Retail",
+    "sectorHi": "रिटेल",
+    "context": "helping a customer find the right product",
+    "contextHi": "ग्राहक को सही सामान चुनने में मदद करना",
+    "skills": [
+      "Customer service",
+      "Communication",
+      "Billing",
+      "Stock management"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "बातचीत",
+      "बिलिंग",
+      "स्टॉक प्रबंधन"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹16,000–21,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-6",
+    "title": "Delivery Driver",
+    "titleHi": "डिलीवरी ड्राइवर",
+    "sector": "Transport",
+    "sectorHi": "परिवहन",
+    "context": "safely completing a delivery when the route changes",
+    "contextHi": "रास्ता बदलने पर सुरक्षित डिलीवरी पूरी करना",
+    "skills": [
+      "Road safety",
+      "Navigation",
+      "Vehicle checks",
+      "Time management"
+    ],
+    "skillsHi": [
+      "सड़क सुरक्षा",
+      "रास्ते की जानकारी",
+      "वाहन जांच",
+      "समय प्रबंधन"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹13,000–18,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-7",
+    "title": "Commercial Vehicle Driver",
+    "titleHi": "व्यावसायिक वाहन चालक",
+    "sector": "Transport",
+    "sectorHi": "परिवहन",
+    "context": "safely completing a delivery when the route changes",
+    "contextHi": "रास्ता बदलने पर सुरक्षित डिलीवरी पूरी करना",
+    "skills": [
+      "Road safety",
+      "Navigation",
+      "Vehicle checks",
+      "Time management"
+    ],
+    "skillsHi": [
+      "सड़क सुरक्षा",
+      "रास्ते की जानकारी",
+      "वाहन जांच",
+      "समय प्रबंधन"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹14,000–19,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-8",
+    "title": "Auto-rickshaw Driver",
+    "titleHi": "ऑटो रिक्शा चालक",
+    "sector": "Transport",
+    "sectorHi": "परिवहन",
+    "context": "safely completing a delivery when the route changes",
+    "contextHi": "रास्ता बदलने पर सुरक्षित डिलीवरी पूरी करना",
+    "skills": [
+      "Road safety",
+      "Navigation",
+      "Vehicle checks",
+      "Time management"
+    ],
+    "skillsHi": [
+      "सड़क सुरक्षा",
+      "रास्ते की जानकारी",
+      "वाहन जांच",
+      "समय प्रबंधन"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹15,000–20,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-9",
+    "title": "Warehouse Picker",
+    "titleHi": "वेयरहाउस पिकर",
+    "sector": "Transport",
+    "sectorHi": "परिवहन",
+    "context": "safely completing a delivery when the route changes",
+    "contextHi": "रास्ता बदलने पर सुरक्षित डिलीवरी पूरी करना",
+    "skills": [
+      "Road safety",
+      "Navigation",
+      "Vehicle checks",
+      "Time management"
+    ],
+    "skillsHi": [
+      "सड़क सुरक्षा",
+      "रास्ते की जानकारी",
+      "वाहन जांच",
+      "समय प्रबंधन"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹16,000–21,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-10",
+    "title": "Logistics Coordinator",
+    "titleHi": "लॉजिस्टिक्स समन्वयक",
+    "sector": "Transport",
+    "sectorHi": "परिवहन",
+    "context": "safely completing a delivery when the route changes",
+    "contextHi": "रास्ता बदलने पर सुरक्षित डिलीवरी पूरी करना",
+    "skills": [
+      "Road safety",
+      "Navigation",
+      "Vehicle checks",
+      "Time management"
+    ],
+    "skillsHi": [
+      "सड़क सुरक्षा",
+      "रास्ते की जानकारी",
+      "वाहन जांच",
+      "समय प्रबंधन"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹17,000–22,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-11",
+    "title": "Domestic Housekeeper",
+    "titleHi": "घरेलू सहायक",
+    "sector": "Home services",
+    "sectorHi": "घरेलू सेवाएँ",
+    "context": "respecting a household’s needs and privacy",
+    "contextHi": "घर की ज़रूरतों और निजता का सम्मान करना",
+    "skills": [
+      "Hygiene",
+      "Time management",
+      "Communication",
+      "Safety"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "समय प्रबंधन",
+      "बातचीत",
+      "सुरक्षा"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹14,000–19,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-12",
+    "title": "Home Cook",
+    "titleHi": "घरेलू रसोइया",
+    "sector": "Home services",
+    "sectorHi": "घरेलू सेवाएँ",
+    "context": "respecting a household’s needs and privacy",
+    "contextHi": "घर की ज़रूरतों और निजता का सम्मान करना",
+    "skills": [
+      "Hygiene",
+      "Time management",
+      "Communication",
+      "Safety"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "समय प्रबंधन",
+      "बातचीत",
+      "सुरक्षा"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹15,000–20,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-13",
+    "title": "Childcare Assistant",
+    "titleHi": "बाल देखभाल सहायक",
+    "sector": "Home services",
+    "sectorHi": "घरेलू सेवाएँ",
+    "context": "respecting a household’s needs and privacy",
+    "contextHi": "घर की ज़रूरतों और निजता का सम्मान करना",
+    "skills": [
+      "Hygiene",
+      "Time management",
+      "Communication",
+      "Safety"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "समय प्रबंधन",
+      "बातचीत",
+      "सुरक्षा"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹16,000–21,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-14",
+    "title": "Elderly Caregiver",
+    "titleHi": "बुज़ुर्ग देखभाल सहायक",
+    "sector": "Home services",
+    "sectorHi": "घरेलू सेवाएँ",
+    "context": "respecting a household’s needs and privacy",
+    "contextHi": "घर की ज़रूरतों और निजता का सम्मान करना",
+    "skills": [
+      "Hygiene",
+      "Time management",
+      "Communication",
+      "Safety"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "समय प्रबंधन",
+      "बातचीत",
+      "सुरक्षा"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹17,000–22,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-15",
+    "title": "Laundry Assistant",
+    "titleHi": "लॉन्ड्री सहायक",
+    "sector": "Home services",
+    "sectorHi": "घरेलू सेवाएँ",
+    "context": "respecting a household’s needs and privacy",
+    "contextHi": "घर की ज़रूरतों और निजता का सम्मान करना",
+    "skills": [
+      "Hygiene",
+      "Time management",
+      "Communication",
+      "Safety"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "समय प्रबंधन",
+      "बातचीत",
+      "सुरक्षा"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹18,000–23,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-16",
+    "title": "Construction Supervisor",
+    "titleHi": "निर्माण पर्यवेक्षक",
+    "sector": "Construction",
+    "sectorHi": "निर्माण",
+    "context": "identifying an unsafe situation on a building site",
+    "contextHi": "निर्माण स्थल पर असुरक्षित स्थिति पहचानना",
+    "skills": [
+      "Site safety",
+      "Teamwork",
+      "Measurement",
+      "Planning"
+    ],
+    "skillsHi": [
+      "स्थल सुरक्षा",
+      "टीमवर्क",
+      "माप",
+      "योजना"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹15,000–20,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-17",
+    "title": "Mason",
+    "titleHi": "राजमिस्त्री",
+    "sector": "Construction",
+    "sectorHi": "निर्माण",
+    "context": "identifying an unsafe situation on a building site",
+    "contextHi": "निर्माण स्थल पर असुरक्षित स्थिति पहचानना",
+    "skills": [
+      "Site safety",
+      "Teamwork",
+      "Measurement",
+      "Planning"
+    ],
+    "skillsHi": [
+      "स्थल सुरक्षा",
+      "टीमवर्क",
+      "माप",
+      "योजना"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹16,000–21,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-18",
+    "title": "Electrician Assistant",
+    "titleHi": "इलेक्ट्रीशियन सहायक",
+    "sector": "Construction",
+    "sectorHi": "निर्माण",
+    "context": "identifying an unsafe situation on a building site",
+    "contextHi": "निर्माण स्थल पर असुरक्षित स्थिति पहचानना",
+    "skills": [
+      "Site safety",
+      "Teamwork",
+      "Measurement",
+      "Planning"
+    ],
+    "skillsHi": [
+      "स्थल सुरक्षा",
+      "टीमवर्क",
+      "माप",
+      "योजना"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹17,000–22,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-19",
+    "title": "Plumber",
+    "titleHi": "प्लंबर",
+    "sector": "Construction",
+    "sectorHi": "निर्माण",
+    "context": "identifying an unsafe situation on a building site",
+    "contextHi": "निर्माण स्थल पर असुरक्षित स्थिति पहचानना",
+    "skills": [
+      "Site safety",
+      "Teamwork",
+      "Measurement",
+      "Planning"
+    ],
+    "skillsHi": [
+      "स्थल सुरक्षा",
+      "टीमवर्क",
+      "माप",
+      "योजना"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹18,000–23,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-20",
+    "title": "Site Storekeeper",
+    "titleHi": "साइट स्टोरकीपर",
+    "sector": "Construction",
+    "sectorHi": "निर्माण",
+    "context": "identifying an unsafe situation on a building site",
+    "contextHi": "निर्माण स्थल पर असुरक्षित स्थिति पहचानना",
+    "skills": [
+      "Site safety",
+      "Teamwork",
+      "Measurement",
+      "Planning"
+    ],
+    "skillsHi": [
+      "स्थल सुरक्षा",
+      "टीमवर्क",
+      "माप",
+      "योजना"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹19,000–24,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-21",
+    "title": "Customer Support Executive",
+    "titleHi": "कस्टमर सपोर्ट एग्ज़ीक्यूटिव",
+    "sector": "BPO & support",
+    "sectorHi": "बीपीओ और सहायता",
+    "context": "resolving a caller’s concern with patience",
+    "contextHi": "धैर्य के साथ कॉलर की समस्या हल करना",
+    "skills": [
+      "Active listening",
+      "Communication",
+      "Computer basics",
+      "Problem solving"
+    ],
+    "skillsHi": [
+      "ध्यान से सुनना",
+      "बातचीत",
+      "कंप्यूटर ज्ञान",
+      "समस्या समाधान"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹16,000–21,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-22",
+    "title": "Telecaller",
+    "titleHi": "टेलीकॉलर",
+    "sector": "BPO & support",
+    "sectorHi": "बीपीओ और सहायता",
+    "context": "resolving a caller’s concern with patience",
+    "contextHi": "धैर्य के साथ कॉलर की समस्या हल करना",
+    "skills": [
+      "Active listening",
+      "Communication",
+      "Computer basics",
+      "Problem solving"
+    ],
+    "skillsHi": [
+      "ध्यान से सुनना",
+      "बातचीत",
+      "कंप्यूटर ज्ञान",
+      "समस्या समाधान"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹17,000–22,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-23",
+    "title": "Data Entry Operator",
+    "titleHi": "डेटा एंट्री ऑपरेटर",
+    "sector": "BPO & support",
+    "sectorHi": "बीपीओ और सहायता",
+    "context": "resolving a caller’s concern with patience",
+    "contextHi": "धैर्य के साथ कॉलर की समस्या हल करना",
+    "skills": [
+      "Active listening",
+      "Communication",
+      "Computer basics",
+      "Problem solving"
+    ],
+    "skillsHi": [
+      "ध्यान से सुनना",
+      "बातचीत",
+      "कंप्यूटर ज्ञान",
+      "समस्या समाधान"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹18,000–23,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-24",
+    "title": "Help Desk Assistant",
+    "titleHi": "हेल्प डेस्क सहायक",
+    "sector": "BPO & support",
+    "sectorHi": "बीपीओ और सहायता",
+    "context": "resolving a caller’s concern with patience",
+    "contextHi": "धैर्य के साथ कॉलर की समस्या हल करना",
+    "skills": [
+      "Active listening",
+      "Communication",
+      "Computer basics",
+      "Problem solving"
+    ],
+    "skillsHi": [
+      "ध्यान से सुनना",
+      "बातचीत",
+      "कंप्यूटर ज्ञान",
+      "समस्या समाधान"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹19,000–24,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-25",
+    "title": "Back Office Associate",
+    "titleHi": "बैक ऑफिस एसोसिएट",
+    "sector": "BPO & support",
+    "sectorHi": "बीपीओ और सहायता",
+    "context": "resolving a caller’s concern with patience",
+    "contextHi": "धैर्य के साथ कॉलर की समस्या हल करना",
+    "skills": [
+      "Active listening",
+      "Communication",
+      "Computer basics",
+      "Problem solving"
+    ],
+    "skillsHi": [
+      "ध्यान से सुनना",
+      "बातचीत",
+      "कंप्यूटर ज्ञान",
+      "समस्या समाधान"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹20,000–25,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-26",
+    "title": "Healthcare Aide",
+    "titleHi": "स्वास्थ्य सहायक",
+    "sector": "Healthcare",
+    "sectorHi": "स्वास्थ्य सेवाएँ",
+    "context": "supporting a patient while following care instructions",
+    "contextHi": "देखभाल के निर्देशों का पालन करके मरीज़ की मदद करना",
+    "skills": [
+      "Hygiene",
+      "Empathy",
+      "Patient safety",
+      "Communication"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "सहानुभूति",
+      "मरीज़ की सुरक्षा",
+      "बातचीत"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹17,000–22,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-27",
+    "title": "Hospital Attendant",
+    "titleHi": "अस्पताल परिचारक",
+    "sector": "Healthcare",
+    "sectorHi": "स्वास्थ्य सेवाएँ",
+    "context": "supporting a patient while following care instructions",
+    "contextHi": "देखभाल के निर्देशों का पालन करके मरीज़ की मदद करना",
+    "skills": [
+      "Hygiene",
+      "Empathy",
+      "Patient safety",
+      "Communication"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "सहानुभूति",
+      "मरीज़ की सुरक्षा",
+      "बातचीत"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹18,000–23,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-28",
+    "title": "Patient Care Assistant",
+    "titleHi": "मरीज़ देखभाल सहायक",
+    "sector": "Healthcare",
+    "sectorHi": "स्वास्थ्य सेवाएँ",
+    "context": "supporting a patient while following care instructions",
+    "contextHi": "देखभाल के निर्देशों का पालन करके मरीज़ की मदद करना",
+    "skills": [
+      "Hygiene",
+      "Empathy",
+      "Patient safety",
+      "Communication"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "सहानुभूति",
+      "मरीज़ की सुरक्षा",
+      "बातचीत"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹19,000–24,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-29",
+    "title": "Clinic Receptionist",
+    "titleHi": "क्लिनिक रिसेप्शनिस्ट",
+    "sector": "Healthcare",
+    "sectorHi": "स्वास्थ्य सेवाएँ",
+    "context": "supporting a patient while following care instructions",
+    "contextHi": "देखभाल के निर्देशों का पालन करके मरीज़ की मदद करना",
+    "skills": [
+      "Hygiene",
+      "Empathy",
+      "Patient safety",
+      "Communication"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "सहानुभूति",
+      "मरीज़ की सुरक्षा",
+      "बातचीत"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹20,000–25,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-30",
+    "title": "Pharmacy Assistant",
+    "titleHi": "फार्मेसी सहायक",
+    "sector": "Healthcare",
+    "sectorHi": "स्वास्थ्य सेवाएँ",
+    "context": "supporting a patient while following care instructions",
+    "contextHi": "देखभाल के निर्देशों का पालन करके मरीज़ की मदद करना",
+    "skills": [
+      "Hygiene",
+      "Empathy",
+      "Patient safety",
+      "Communication"
+    ],
+    "skillsHi": [
+      "साफ-सफाई",
+      "सहानुभूति",
+      "मरीज़ की सुरक्षा",
+      "बातचीत"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹21,000–26,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-31",
+    "title": "Front Desk Associate",
+    "titleHi": "फ्रंट डेस्क एसोसिएट",
+    "sector": "Hospitality",
+    "sectorHi": "आतिथ्य",
+    "context": "welcoming a guest during a busy shift",
+    "contextHi": "व्यस्त शिफ्ट के दौरान मेहमान का स्वागत करना",
+    "skills": [
+      "Customer service",
+      "Hygiene",
+      "Teamwork",
+      "Communication"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "साफ-सफाई",
+      "टीमवर्क",
+      "बातचीत"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹18,000–23,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-32",
+    "title": "Food & Beverage Server",
+    "titleHi": "फूड और बेवरेज सर्वर",
+    "sector": "Hospitality",
+    "sectorHi": "आतिथ्य",
+    "context": "welcoming a guest during a busy shift",
+    "contextHi": "व्यस्त शिफ्ट के दौरान मेहमान का स्वागत करना",
+    "skills": [
+      "Customer service",
+      "Hygiene",
+      "Teamwork",
+      "Communication"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "साफ-सफाई",
+      "टीमवर्क",
+      "बातचीत"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹19,000–24,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-33",
+    "title": "Kitchen Assistant",
+    "titleHi": "किचन सहायक",
+    "sector": "Hospitality",
+    "sectorHi": "आतिथ्य",
+    "context": "welcoming a guest during a busy shift",
+    "contextHi": "व्यस्त शिफ्ट के दौरान मेहमान का स्वागत करना",
+    "skills": [
+      "Customer service",
+      "Hygiene",
+      "Teamwork",
+      "Communication"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "साफ-सफाई",
+      "टीमवर्क",
+      "बातचीत"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹20,000–25,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-34",
+    "title": "Hotel Housekeeper",
+    "titleHi": "होटल हाउसकीपर",
+    "sector": "Hospitality",
+    "sectorHi": "आतिथ्य",
+    "context": "welcoming a guest during a busy shift",
+    "contextHi": "व्यस्त शिफ्ट के दौरान मेहमान का स्वागत करना",
+    "skills": [
+      "Customer service",
+      "Hygiene",
+      "Teamwork",
+      "Communication"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "साफ-सफाई",
+      "टीमवर्क",
+      "बातचीत"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹21,000–26,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-35",
+    "title": "Barista",
+    "titleHi": "बरिस्ता",
+    "sector": "Hospitality",
+    "sectorHi": "आतिथ्य",
+    "context": "welcoming a guest during a busy shift",
+    "contextHi": "व्यस्त शिफ्ट के दौरान मेहमान का स्वागत करना",
+    "skills": [
+      "Customer service",
+      "Hygiene",
+      "Teamwork",
+      "Communication"
+    ],
+    "skillsHi": [
+      "ग्राहक सेवा",
+      "साफ-सफाई",
+      "टीमवर्क",
+      "बातचीत"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹22,000–27,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-36",
+    "title": "Machine Operator",
+    "titleHi": "मशीन ऑपरेटर",
+    "sector": "Manufacturing",
+    "sectorHi": "विनिर्माण",
+    "context": "maintaining quality without skipping safety checks",
+    "contextHi": "सुरक्षा जांच किए बिना गुणवत्ता से समझौता न करना",
+    "skills": [
+      "Safety",
+      "Quality checks",
+      "Teamwork",
+      "Machine basics"
+    ],
+    "skillsHi": [
+      "सुरक्षा",
+      "गुणवत्ता जांच",
+      "टीमवर्क",
+      "मशीन की जानकारी"
+    ],
+    "location": "Lucknow, Uttar Pradesh",
+    "salary": "₹19,000–24,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-37",
+    "title": "Assembly Line Worker",
+    "titleHi": "असेंबली लाइन कर्मचारी",
+    "sector": "Manufacturing",
+    "sectorHi": "विनिर्माण",
+    "context": "maintaining quality without skipping safety checks",
+    "contextHi": "सुरक्षा जांच किए बिना गुणवत्ता से समझौता न करना",
+    "skills": [
+      "Safety",
+      "Quality checks",
+      "Teamwork",
+      "Machine basics"
+    ],
+    "skillsHi": [
+      "सुरक्षा",
+      "गुणवत्ता जांच",
+      "टीमवर्क",
+      "मशीन की जानकारी"
+    ],
+    "location": "Delhi NCR",
+    "salary": "₹20,000–25,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-38",
+    "title": "Quality Check Assistant",
+    "titleHi": "गुणवत्ता जांच सहायक",
+    "sector": "Manufacturing",
+    "sectorHi": "विनिर्माण",
+    "context": "maintaining quality without skipping safety checks",
+    "contextHi": "सुरक्षा जांच किए बिना गुणवत्ता से समझौता न करना",
+    "skills": [
+      "Safety",
+      "Quality checks",
+      "Teamwork",
+      "Machine basics"
+    ],
+    "skillsHi": [
+      "सुरक्षा",
+      "गुणवत्ता जांच",
+      "टीमवर्क",
+      "मशीन की जानकारी"
+    ],
+    "location": "Jaipur, Rajasthan",
+    "salary": "₹21,000–26,000",
+    "experience": "0–1 year"
+  },
+  {
+    "id": "role-39",
+    "title": "Packaging Associate",
+    "titleHi": "पैकेजिंग एसोसिएट",
+    "sector": "Manufacturing",
+    "sectorHi": "विनिर्माण",
+    "context": "maintaining quality without skipping safety checks",
+    "contextHi": "सुरक्षा जांच किए बिना गुणवत्ता से समझौता न करना",
+    "skills": [
+      "Safety",
+      "Quality checks",
+      "Teamwork",
+      "Machine basics"
+    ],
+    "skillsHi": [
+      "सुरक्षा",
+      "गुणवत्ता जांच",
+      "टीमवर्क",
+      "मशीन की जानकारी"
+    ],
+    "location": "Pune, Maharashtra",
+    "salary": "₹22,000–27,000",
+    "experience": "1–2 years"
+  },
+  {
+    "id": "role-40",
+    "title": "Textile Machine Assistant",
+    "titleHi": "टेक्सटाइल मशीन सहायक",
+    "sector": "Manufacturing",
+    "sectorHi": "विनिर्माण",
+    "context": "maintaining quality without skipping safety checks",
+    "contextHi": "सुरक्षा जांच किए बिना गुणवत्ता से समझौता न करना",
+    "skills": [
+      "Safety",
+      "Quality checks",
+      "Teamwork",
+      "Machine basics"
+    ],
+    "skillsHi": [
+      "सुरक्षा",
+      "गुणवत्ता जांच",
+      "टीमवर्क",
+      "मशीन की जानकारी"
+    ],
+    "location": "Gorakhpur, Uttar Pradesh",
+    "salary": "₹23,000–28,000",
+    "experience": "0–1 year"
+  }
+]
