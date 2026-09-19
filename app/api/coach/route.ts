@@ -1,4 +1,5 @@
 import {env} from 'cloudflare:workers';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {z} from 'zod';
 import {roles,questionsFor,gradeAnswer,jobFit,scenarioBank,type Lang} from '@/lib/vaani/data';
 import {questionSchema,feedbackSchema,fitSchema,sessionSchema,jsonSchemas,score} from '@/lib/vaani/schemas';

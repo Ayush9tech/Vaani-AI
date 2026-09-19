@@ -1,6 +1,10 @@
-import json, os
+import json
+import os
+
 import httpx
 from pydantic import BaseModel
+
+
 async def structured(task:str, payload:dict, output:type[BaseModel]):
     key=os.environ.get('OPENAI_API_KEY')
     if not key: return None

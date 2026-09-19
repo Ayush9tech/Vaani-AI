@@ -1,15 +1,24 @@
-import hashlib, io, os, re, secrets, time, uuid
+import hashlib
+import io
+import os
+import re
+import secrets
+import time
+import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime
-from fastapi import FastAPI, HTTPException, Request, Response, UploadFile, File, Form
+
+from fastapi import FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader
-from sqlalchemy import select, delete, text
+from sqlalchemy import delete, select, text
 from sqlalchemy.exc import IntegrityError
-from .database import Base, engine, SessionLocal, PracticeSession
-from .schemas import CoachRequest, QuestionBatch, Feedback, Fit, ScenarioGrade
-from .core import ROLES, QUESTIONS, SCENARIOS, grade, fit, clamp
+
+from .core import QUESTIONS, ROLES, SCENARIOS, clamp, fit, grade
+from .database import Base, PracticeSession, SessionLocal, engine
 from .llm import structured
+from .schemas import CoachRequest, Feedback, Fit, QuestionBatch, ScenarioGrade
+
 
 @asynccontextmanager
 async def lifespan(app):
@@ -41,7 +50,7 @@ def health():
 @app.get('/api/roles')
 def roles(): return {'roles':list(ROLES.values()),'mock':True}
 @app.post('/api/resume')
-async def resume_upload(file:UploadFile=File(...),consent:bool=Form(False)):
+async def resume_upload(file:UploadFile=File(...),consent:bool=Form(False)):  # noqa: B008
     if not consent:raise HTTPException(403,'Consent required before server processing')
     raw=await file.read(5*1024*1024+1)
     if len(raw)>5*1024*1024:raise HTTPException(413,'Choose a file smaller than 5 MB')
@@ -56,7 +65,8 @@ async def resume_upload(file:UploadFile=File(...),consent:bool=Form(False)):
         if len(value.strip())<20:raise HTTPException(422,'No readable text. Paste text from your resume; scanned PDFs need OCR.')
         return {'text':value[:18000],'stored':False}
     except HTTPException:raise
-    except Exception:raise HTTPException(422,'Could not read this file')
+    except Exception:  # noqa: BLE001
+        raise HTTPException(422,'Could not read this file')
     finally:
         raw=b'';await file.close()
 
@@ -110,7 +120,7 @@ async def coach(body:CoachRequest,request:Request,response:Response):
                 if body.task=='grade':
                     result.confidence=grade(body.answer,body.question,role,lang,body.audio).confidence
                     result.overall=clamp((result.content+result.clarity)/2 if result.confidence is None else (result.content+result.clarity+result.confidence)/3)
-        except Exception:
+        except Exception:  # noqa: BLE001, S110
             # Do not log resumes, answers, provider bodies, or credentials. The labelled demo rubric remains available.
             pass
     if body.task=='questions':return {**result.model_dump(),'source':source}

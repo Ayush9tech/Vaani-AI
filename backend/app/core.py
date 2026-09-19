@@ -1,7 +1,12 @@
 """Explicit demo rubric; never represented as a trained or validated assessment."""
-import json, math, re, os
+import json
+import math
+import os
+import re
 from pathlib import Path
+
 from .schemas import Feedback, Fit, Star
+
 DATA = Path(os.environ.get('DATA_DIR', str(Path(__file__).resolve().parents[2] / 'data')))
 ROLES = {r['id']: r for r in json.loads((DATA/'role-records.json').read_text())}
 QUESTIONS = json.loads((DATA/'question-banks.json').read_text())

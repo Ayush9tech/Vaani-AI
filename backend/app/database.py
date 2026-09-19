@@ -1,6 +1,8 @@
 import os
-from sqlalchemy import create_engine, String, Integer, Index
+
+from sqlalchemy import Index, Integer, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
 DATABASE_URL = os.environ.get('DATABASE_URL','postgresql+psycopg://vaani:vaani@localhost:5432/vaani')
 engine = create_engine(DATABASE_URL, pool_pre_ping=True, **({'connect_args':{'check_same_thread':False}} if DATABASE_URL.startswith('sqlite') else {}))
 SessionLocal=sessionmaker(bind=engine)
@@ -20,4 +22,4 @@ class PracticeSession(Base):
     completed:Mapped[int]=mapped_column(Integer,nullable=False)
     __table_args__=(Index('idx_sessions_owner_date','owner','date'),)
     def public(self):
-        return dict(id=self.id,roleId=self.role_id,roleTitle=self.role_title,date=self.date,mode=self.mode,score=self.score,content=self.content,clarity=self.clarity,confidence=self.confidence,completed=self.completed)
+        return {"id": self.id, "roleId": self.role_id, "roleTitle": self.role_title, "date": self.date, "mode": self.mode, "score": self.score, "content": self.content, "clarity": self.clarity, "confidence": self.confidence, "completed": self.completed}
