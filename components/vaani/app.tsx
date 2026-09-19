@@ -5,6 +5,7 @@ import {Activity,ArrowDownToLine,ArrowLeft,ArrowRight,AudioLines,Award,BookOpen,
 import {Sidebar,SidebarProvider,SidebarHeader,SidebarContent,SidebarFooter,SidebarTrigger,useSidebar} from '@/components/ui/sidebar';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {AlertDialog,AlertDialogContent,AlertDialogHeader,AlertDialogTitle,AlertDialogDescription,AlertDialogFooter,AlertDialogCancel,AlertDialogAction} from '@/components/ui/alert-dialog';
+import { signIn } from 'next-auth/react';
 import {Switch} from '@/components/ui/switch';
 import {Progress} from '@/components/ui/progress';
 import {Select,SelectTrigger,SelectValue,SelectContent,SelectItem} from '@/components/ui/select';
@@ -24,8 +25,13 @@ function NavButton({active,icon:Icon,label,onClick}:{active:boolean;icon:any;lab
 function Stat({icon:Icon,label,value,note}:{icon:any;label:string;value:string;note:string}){return <div className="stat"><span className="stat-icon"><Icon size={20}/></span><div><small>{label}</small><strong>{value}</strong><p>{note}</p></div></div>;}
 function Metric({label,value,note}:{label:string;value:number|null;note?:string}){return <div className="metric"><div><span>{label}</span><strong>{value===null?'—':`${value}/100`}</strong></div><Progress value={value||0} aria-label={label}/>{note&&<p>{note}</p>}</div>;}
 const viewList:View[]=['home','roles','fit','practice','interview','ivr','scenarios','progress','privacy','scorecard'];
-export default function Vaani(){
- const[view,setView]=useState<View>('home');const[lang,setLang]=useState<Lang>('en');const[role,setRole]=useState<Role>(roles[0]);const[sessions,setSessions]=useState<Session[]>([]);const[loaded,setLoaded]=useState(false);const[online,setOnline]=useState(true);
+ export default function Vaani(){
+  const [authUser, setAuthUser] = useState<any>(undefined);
+  const [demoMode, setDemoMode] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [loginMessage, setLoginMessage] = useState('');
+  const[view,setView]=useState<View>('home');const[lang,setLang]=useState<Lang>('en');const[role,setRole]=useState<Role>(roles[0]);const[sessions,setSessions]=useState<Session[]>([]);const[loaded,setLoaded]=useState(false);const[online,setOnline]=useState(true);
  const[search,setSearch]=useState('');const[sector,setSector]=useState('All sectors');const[resume,setResume]=useState('');const[fit,setFit]=useState<Fit|null>(null);const[fileName,setFileName]=useState('');const[busy,setBusy]=useState(false);
  const[mode,setMode]=useState<Mode>('voice');const[qs,setQs]=useState<Question[]>([]);const[qIndex,setQIndex]=useState(0);const[answer,setAnswer]=useState('');const[feedback,setFeedback]=useState<Feedback|null>(null);const[reviews,setReviews]=useState<Feedback[]>([]);const[consent,setConsent]=useState(false);const[consentOpen,setConsentOpen]=useState(false);const[aiConsent,setAiConsent]=useState(false);const[pendingMode,setPendingMode]=useState<Mode>('voice');const[recording,setRecording]=useState(false);const[audioMetrics,setAudioMetrics]=useState<AudioMetrics|undefined>();const[readback,setReadback]=useState(true);const[questionSource,setQuestionSource]=useState('demo');const[finalSession,setFinalSession]=useState<Session|null>(null);
  const[callState,setCallState]=useState<'idle'|'ringing'|'incoming'|'language'>('idle');const[scenarioIdx,setScenarioIdx]=useState(0);const[choice,setChoice]=useState<number|null>(null);const[scenarioDone,setScenarioDone]=useState(false);const[scenarioScores,setScenarioScores]=useState<number[]>([]);const[scenarioExplanation,setScenarioExplanation]=useState('');const[scenarioResult,setScenarioResult]=useState<{score:number;tip:string;source:string}|null>(null);
@@ -34,7 +40,50 @@ export default function Vaani(){
  const t=(en:string,hi:string)=>lang==='hi'?hi:en;const title=lang==='hi'?role.titleHi:role.title;const ready=readiness(sessions,role.id);const activeSessions=sessions.filter(s=>s.roleId===role.id);const last=activeSessions.filter(s=>s.mode!=='scenario').at(-1);const q=qs[qIndex];
  const nav=(next:View)=>{if(view==='interview'&&reviews.length<7){setConfirmLeave(next);return;}changeView(next);};
  function changeView(next:View){flowGeneration.current++;requestGeneration.current++;speech.clear();setRecording(false);setBusy(false);setView(next);window.location.hash=next;window.scrollTo({top:0,behavior:'smooth'});}
- useEffect(()=>{try{const saved=localStorage.getItem('vaani.scores.v1');setSessions(saved?JSON.parse(saved):sampleSessions());setLang((localStorage.getItem('vaani.language')as Lang)||'en');const savedRole=roles.find(r=>r.id===localStorage.getItem('vaani.role'));if(savedRole)setRole(savedRole);setNcsSynced(localStorage.getItem('vaani.mock-ncs')==='true');}catch{setSessions(sampleSessions());}const hash=window.location.hash.slice(1)as View;if(viewList.includes(hash)&&!['interview','scorecard'].includes(hash))setView(hash);setLoaded(true);setOnline(navigator.onLine);coachRequest('history',{}).then(r=>{if(r.sessions?.length)setSessions(old=>{const combined=new Map(old.filter(s=>!s.demo).map(s=>[s.id,s]));(r.sessions as Session[]).forEach(s=>combined.set(s.id,s));return [...combined.values()].sort((a,b)=>a.date.localeCompare(b.date));});}).catch(()=>{});const on=()=>setOnline(true),off=()=>setOnline(false),install=(e:Event)=>{e.preventDefault();setInstallEvent(e);};window.addEventListener('online',on);window.addEventListener('offline',off);window.addEventListener('beforeinstallprompt',install);if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});return()=>{window.removeEventListener('online',on);window.removeEventListener('offline',off);window.removeEventListener('beforeinstallprompt',install);speech.clear();};},[]);
+  useEffect(() => {
+    fetch('/api/auth/session').then(r => r.json()).then((data: any) => {
+      if (data && Object.keys(data).length > 0 && data.user) {
+        setAuthUser(data.user);
+        setDemoMode(false);
+      } else {
+        setAuthUser(null);
+        if (localStorage.getItem('vaani.demo') === 'true') {
+          setDemoMode(true);
+        } else {
+          setLoginOpen(true);
+        }
+      }
+    }).catch(() => {
+      setAuthUser(null);
+      setDemoMode(true);
+    });
+  }, []);
+  useEffect(()=>{
+    if (authUser === undefined) return;
+    try{
+      const saved=localStorage.getItem('vaani.scores.v1');
+      if (demoMode) {
+        setSessions(saved?JSON.parse(saved):sampleSessions());
+        setLang((localStorage.getItem('vaani.language')as Lang)||'en');
+        const savedRole=roles.find(r=>r.id===localStorage.getItem('vaani.role'));
+        if(savedRole)setRole(savedRole);
+      } else {
+        setSessions(saved?JSON.parse(saved).filter((s:any)=>!s.demo):[]);
+      }
+      setNcsSynced(localStorage.getItem('vaani.mock-ncs')==='true');
+    }catch{
+      setSessions(demoMode ? sampleSessions() : []);
+    }
+    const hash=window.location.hash.slice(1)as View;
+    if(viewList.includes(hash)&&!['interview','scorecard'].includes(hash))setView(hash);
+    setLoaded(true);
+    setOnline(navigator.onLine);
+    coachRequest('history',{}).then(r=>{if(r.sessions?.length)setSessions(old=>{const combined=new Map(old.filter(s=>!s.demo).map(s=>[s.id,s]));(r.sessions as Session[]).forEach(s=>combined.set(s.id,s));return [...combined.values()].sort((a,b)=>a.date.localeCompare(b.date));});}).catch(()=>{});
+    const on=()=>setOnline(true),off=()=>setOnline(false),install=(e:Event)=>{e.preventDefault();setInstallEvent(e);};
+    window.addEventListener('online',on);window.addEventListener('offline',off);window.addEventListener('beforeinstallprompt',install);
+    if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    return()=>{window.removeEventListener('online',on);window.removeEventListener('offline',off);window.removeEventListener('beforeinstallprompt',install);speech.clear();};
+  },[authUser, demoMode]);
  useEffect(()=>{if(loaded){try{localStorage.setItem('vaani.scores.v1',JSON.stringify(sessions));localStorage.setItem('vaani.language',lang);localStorage.setItem('vaani.role',role.id);}catch{toast(t('Your browser could not save scores. Keep this page open.','स्कोर सेव नहीं हो पाए। यह पेज खुला रखें।'));}}document.documentElement.lang=lang;},[sessions,lang,role.id,loaded]);
  useEffect(()=>{if(callState!=='ringing')return;const timer=setTimeout(()=>setCallState('incoming'),2200);return()=>clearTimeout(timer);},[callState]);
  useEffect(()=>{if(view==='interview'&&mode!=='text'&&q&&readback&&consent)speech.speak(q.text,lang);return()=>speech.stopSpeaking();},[view,qIndex,qs,mode,readback]);
@@ -57,7 +106,87 @@ export default function Vaani(){
  const modeCards=()=> <div className="mode-grid">{([{id:'voice',icon:Mic,label:t('Use your voice','बोलकर अभ्यास'),desc:t('A conversation, at your pace.','अपनी गति से बातचीत।'),note:t('RECOMMENDED','सुझाया गया')},{id:'text',icon:MessageCircle,label:t('Type it out','लिखकर अभ्यास'),desc:t('Take a moment. Find your words.','थोड़ा सोचें। अपनी बात लिखें।'),note:t('GO AT YOUR PACE','अपनी गति से')},{id:'ivr',icon:PhoneCall,label:t('Try a phone interview','फ़ोन इंटरव्यू आज़माएँ'),desc:t('Experience a simple call flow.','आसान फ़ोन कॉल का अनुभव।'),note:t('MISSED-CALL DEMO','मिस्ड कॉल डेमो')}]as const).map(({id,icon:Icon,label,desc,note})=><button className={'mode-card '+(id==='voice'?'featured':'')} key={id} onClick={()=>id==='ivr'?changeView('ivr'):beginInterview(id)}><div className="mode-top"><span className="mode-icon"><Icon size={24}/></span>{id==='voice'&&<span className="tiny-pill">{t('For you','आपके लिए')}</span>}</div><h3>{label}</h3><p>{desc}</p><div className="mode-bottom"><span>{note}</span><ArrowRight size={18}/></div></button>)}</div>;
  const sessionRows=(all=false)=><div className="session-list">{(all?[...sessions].reverse():[...sessions].reverse().slice(0,3)).map(s=><div className="session-row" key={s.id}><span className={'session-icon '+s.mode}>{s.mode==='voice'?<Mic size={19}/>:s.mode==='ivr'?<Phone size={19}/>:s.mode==='scenario'?<Users size={19}/>:<MessageCircle size={19}/>}</span><div className="session-details"><strong>{lang==='hi'?roles.find(r=>r.id===s.roleId)?.titleHi:s.roleTitle}</strong><small>{s.mode==='scenario'?t('Soft skills','सॉफ्ट स्किल्स'):s.mode==='text'?t('Text interview','लिखित इंटरव्यू'):s.mode==='voice'?t('Voice interview','वॉइस इंटरव्यू'):t('Phone simulation','फ़ोन सिमुलेशन')} · {new Date(s.date).toLocaleDateString(lang==='hi'?'hi-IN':'en-IN',{day:'numeric',month:'short'})}{s.demo&&` · ${t('Sample','नमूना')}`}</small></div><span className="score-chip">{s.score}<small>/100</small></span></div>)}{!sessions.length&&<div className="empty"><BookOpen size={26}/><p>{t('Your first practice session belongs here.','आपका पहला अभ्यास यहाँ दिखेगा।')}</p><button className="text-link" onClick={()=>changeView('practice')}>{t('Start a session','अभ्यास शुरू करें')} <ArrowRight size={15}/></button></div>}</div>;
  const scoreMetrics=(s:{content:number;clarity:number;confidence:number|null})=><><Metric label={t('Content relevance','जवाब की प्रासंगिकता')} value={s.content}/><Metric label={t('Clarity','स्पष्टता')} value={s.clarity}/><Metric label={t('Voice delivery','बोलने का अंदाज़')} value={s.confidence} note={s.confidence===null?t('Available with enough recorded speech. Text is never penalised.','पर्याप्त आवाज़ के साथ उपलब्ध। लिखित जवाब का स्कोर कम नहीं होता।'):t('A coaching estimate from pauses, pace and pitch variation—not a personality judgment.','विराम, गति और आवाज़ के बदलाव पर अभ्यास का अनुमान, व्यक्तित्व का निर्णय नहीं।')}/></>;
- return <SidebarProvider style={{'--sidebar-width':'244px'}as React.CSSProperties}><Toaster richColors position="top-center"/><a href="#main-content" className="skip-link">Skip to content</a><Sidebar className="app-sidebar"><SidebarHeader><button className="brand" onClick={()=>nav('home')}><Mark/><div>vaani<span>AI</span><small>{t('Every voice. Every opportunity.','हर आवाज़। हर अवसर।')}</small></div></button></SidebarHeader><SidebarContent><div className="nav-label">{t('YOUR NEXT CHAPTER','आपका अगला कदम')}</div><nav aria-label="Main navigation"><NavButton active={view==='home'} icon={Home} label={t('My practice space','मेरा अभ्यास')} onClick={()=>nav('home')}/><NavButton active={['roles','fit'].includes(view)} icon={BriefcaseBusiness} label={t('Find your role','अपना काम चुनें')} onClick={()=>nav('roles')}/><NavButton active={['practice','interview','ivr','scorecard'].includes(view)} icon={Mic} label={t('Interview practice','इंटरव्यू अभ्यास')} onClick={()=>nav('practice')}/><NavButton active={view==='scenarios'} icon={Users} label={t('Soft skills','सॉफ्ट स्किल्स')} onClick={()=>nav('scenarios')}/><NavButton active={view==='progress'} icon={TrendingUp} label={t('My progress','मेरी प्रगति')} onClick={()=>nav('progress')}/></nav><div className="sidebar-coach"><span><Sparkles size={19}/>{t('A little reminder','एक छोटी याद')}</span><p>{t('You don’t need perfect answers. Just the courage to start.','जवाब एकदम सही होना ज़रूरी नहीं। बस शुरुआत करने का हौसला चाहिए।')}</p><Speak lang={lang} text={t('You don’t need perfect answers. Just the courage to start.','जवाब एकदम सही होना ज़रूरी नहीं। बस शुरुआत करने का हौसला चाहिए।')}/></div></SidebarContent><SidebarFooter><NavButton active={view==='privacy'} icon={ShieldCheck} label={t('Privacy & preferences','गोपनीयता और विकल्प')} onClick={()=>nav('privacy')}/><div className="profile"><span className="avatar">A</span><div><strong>{t('Asha Verma','आशा वर्मा')}</strong><small>{t('Demo NCS profile','डेमो एनसीएस प्रोफ़ाइल')}</small></div><span className="profile-check"><Check size={15}/></span></div></SidebarFooter></Sidebar>
+  if (authUser === undefined) return null;
+  if (!authUser && !demoMode) {
+    return (
+      <div style={{ minHeight: '100vh', background: 'var(--background)', color: 'var(--foreground)', display: 'flex', flexDirection: 'column' }}>
+        <header style={{ padding: '20px 40px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--card)' }}>
+          <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Mark />
+            <div style={{ lineHeight: 1.1 }}>
+              <span style={{ fontSize: '20px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>vaani<span style={{ color: 'var(--brand)', fontWeight: 800 }}>AI</span></span>
+              <small style={{ display: 'block', color: 'var(--text-muted)', fontSize: '11px', marginTop: '2px' }}>{t('Every voice. Every opportunity.','हर आवाज़। हर अवसर।')}</small>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <Languages size={18} style={{ color: 'var(--text-muted)' }}/>
+            <Select value={lang} onValueChange={v => setLang(v as Lang)}>
+              <SelectTrigger className="language-select" style={{ border: 'none', background: 'transparent', padding: 0, height: 'auto', gap: '4px' }}><SelectValue/></SelectTrigger>
+              <SelectContent><SelectItem value="en">English</SelectItem><SelectItem value="hi">हिंदी</SelectItem></SelectContent>
+            </Select>
+          </div>
+        </header>
+        <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+          <div className="card" style={{ maxWidth: '440px', width: '100%', textAlign: 'center', padding: '48px 40px', boxShadow: '0 8px 30px rgba(0,0,0,0.04)' }}>
+            <Mark />
+            <h2 style={{ fontSize: '28px', marginTop: '24px', marginBottom: '8px' }}>{t('Welcome to Vaani AI', 'वाणी एआई में आपका स्वागत है')}</h2>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>{t('Sign in to practice and save your progress across devices.', 'अभ्यास करने और प्रगति सेव करने के लिए साइन इन करें।')}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <button className="btn btn-outline full" onClick={async () => { 
+                const csrfRes = await fetch('/api/auth/csrf'); 
+                const { csrfToken } = await csrfRes.json();
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/api/auth/signin/google';
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfToken';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+              }}>
+                <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                {t('Continue with Google', 'Google से जारी रखें')}
+              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '8px 0', color: 'var(--text-muted)' }}>
+                <hr style={{ flex: 1, borderColor: 'var(--border)' }} /><span>{t('or', 'या')}</span><hr style={{ flex: 1, borderColor: 'var(--border)' }} />
+              </div>
+              <form onSubmit={async (e) => { e.preventDefault(); setLoginMessage(t('Check your email for a sign-in link.', 'साइन इन लिंक के लिए अपना ईमेल चेक करें।')); try { const csrfRes = await fetch('/api/auth/csrf'); const { csrfToken } = (await csrfRes.json()) as any; await fetch('/api/auth/signin/nodemailer', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ email: emailInput, csrfToken }) }); } catch(err) {} }} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <input type="email" placeholder={t('name@example.com', 'name@example.com')} required value={emailInput} onChange={e => setEmailInput(e.target.value)} style={{ padding: '12px', borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', color: 'var(--foreground)' }}/>
+                <button className="btn btn-primary full" type="submit">{t('Continue with Email', 'ईमेल से जारी रखें')}</button>
+              </form>
+              {loginMessage && <p style={{ color: 'var(--brand)', marginTop: '8px' }}>{loginMessage}</p>}
+            </div>
+            {!authUser && <button className="subtle-link center" style={{ marginTop: '24px' }} onClick={() => { localStorage.setItem('vaani.demo', 'true'); setDemoMode(true); setLoginOpen(false); }}>{t('Continue without account (Demo)', 'खाते के बिना जारी रखें (डेमो)')}</button>}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+ return <SidebarProvider style={{'--sidebar-width':'244px'}as React.CSSProperties}><Toaster richColors position="top-center"/><a href="#main-content" className="skip-link">Skip to content</a><Sidebar className="app-sidebar"><SidebarHeader><button className="brand" onClick={()=>nav('home')}><Mark/><div>vaani<span>AI</span><small>{t('Every voice. Every opportunity.','हर आवाज़। हर अवसर।')}</small></div></button></SidebarHeader><SidebarContent><div className="nav-label">{t('YOUR NEXT CHAPTER','आपका अगला कदम')}</div><nav aria-label="Main navigation"><NavButton active={view==='home'} icon={Home} label={t('My practice space','मेरा अभ्यास')} onClick={()=>nav('home')}/><NavButton active={['roles','fit'].includes(view)} icon={BriefcaseBusiness} label={t('Find your role','अपना काम चुनें')} onClick={()=>nav('roles')}/><NavButton active={['practice','interview','ivr','scorecard'].includes(view)} icon={Mic} label={t('Interview practice','इंटरव्यू अभ्यास')} onClick={()=>nav('practice')}/><NavButton active={view==='scenarios'} icon={Users} label={t('Soft skills','सॉफ्ट स्किल्स')} onClick={()=>nav('scenarios')}/><NavButton active={view==='progress'} icon={TrendingUp} label={t('My progress','मेरी प्रगति')} onClick={()=>nav('progress')}/></nav><div className="sidebar-coach"><span><Sparkles size={19}/>{t('A little reminder','एक छोटी याद')}</span><p>{t('You don’t need perfect answers. Just the courage to start.','जवाब एकदम सही होना ज़रूरी नहीं। बस शुरुआत करने का हौसला चाहिए।')}</p><Speak lang={lang} text={t('You don’t need perfect answers. Just the courage to start.','जवाब एकदम सही होना ज़रूरी প্রজাতন্ত্র।')} /></div></SidebarContent><SidebarFooter><NavButton active={view==='privacy'} icon={ShieldCheck} label={t('Privacy & preferences','गोपनीयता और विकल्प')} onClick={()=>nav('privacy')}/>
+  {authUser ? (
+    <div className="profile" onClick={() => window.location.href='/api/auth/signout'} style={{ cursor: 'pointer' }}>
+      <span className="avatar">{authUser.name?.[0]?.toUpperCase() || authUser.email?.[0]?.toUpperCase() || 'U'}</span>
+      <div>
+        <strong>{authUser.name || authUser.email}</strong>
+        <small>{t('Sign out','साइन आउट')}</small>
+      </div>
+      <span className="profile-check"><ArrowRight size={15}/></span>
+    </div>
+  ) : demoMode ? (
+    <div className="profile" onClick={() => { localStorage.removeItem('vaani.demo'); setDemoMode(false); }} style={{ cursor: 'pointer' }}>
+      <span className="avatar">A</span>
+      <div>
+        <strong>{t('Asha Verma','आशा वर्मा')}</strong>
+        <small>{t('Sign in to save','सेव करने के लिए साइन इन करें')}</small>
+      </div>
+      <span className="profile-check"><LockKeyhole size={15}/></span>
+    </div>
+  ) : null}
+</SidebarFooter></Sidebar>
+
  <div className="app-main"><header className="topbar"><div className="breadcrumb"><SidebarTrigger className="mobile-menu"/><span>{t('My workspace','मेरा कार्यक्षेत्र')}</span><ChevronRight size={14}/><strong>{names[view]}</strong></div><div className="topbar-actions"><span className="prototype-tag">{t('IDEATHON PROTOTYPE','आइडियाथॉन प्रोटोटाइप')}</span><Languages size={18}/><Select value={lang} onValueChange={v=>{speech.clear();setRecording(false);setLang(v as Lang);if(view==='interview')toast(v==='hi'?'इंटरव्यू के सवाल उसी भाषा में रहेंगे। अगला सत्र हिंदी में होगा।':'Current questions keep their language. Your next session will use English.');}}><SelectTrigger className="language-select" aria-label="Choose language"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="en">English</SelectItem><SelectItem value="hi">हिंदी</SelectItem></SelectContent></Select><span className="top-avatar">A</span></div></header>
  {!online&&<div className="offline-banner"><WifiOff size={16}/>{t('You’re offline. Text practice and saved scores still work. Speech may need internet.','आप ऑफ़लाइन हैं। लिखित अभ्यास और सेव स्कोर चलते हैं। आवाज़ के लिए इंटरनेट लग सकता है।')}</div>}
  <main id="main-content" className={'workspace view-'+view} tabIndex={-1}><div className="page-heading"><div><div className="eyebrow">{view==='home'?t('LET’S TAKE YOUR NEXT STEP','चलिए, अगला कदम लें'):t('YOUR VOICE. YOUR PACE.','आपकी आवाज़। आपकी गति।')}</div><h1>{view==='home'?t('Welcome back, Asha','स्वागत है, आशा'):names[view]}{view==='home'&&<span className="greeting-dot">.</span>}</h1><p>{view==='home'?t('A little practice today. A little more confidence tomorrow.','आज थोड़ा अभ्यास। कल थोड़ा और आत्मविश्वास।'):view==='roles'?t('Find a role that feels right. We’ll help you get ready for it.','अपना काम चुनिए। उसकी तैयारी में हम मदद करेंगे।'):view==='practice'?t('There’s no one right way to practise. Choose what feels comfortable.','अभ्यास का एक ही तरीका नहीं। अपना पसंदीदा तरीका चुनिए।'):view==='progress'?t('Every rep counts. See how far you’ve come.','हर कोशिश मायने रखती है। अपनी प्रगति देखिए।'):view==='privacy'?t('Your voice belongs to you. You decide what happens to it.','आपकी आवाज़ आपकी है। उसका उपयोग आप तय करें।'):''}</p></div><button className="read-page" aria-label={t('Listen to this page','यह पेज सुनें')} onClick={()=>{const el=document.getElementById('main-content');speech.speak(el?.innerText.slice(0,5000)||names[view],lang);}}><Volume2 size={17}/><span>{t('Listen to this page','यह पेज सुनें')}</span></button></div>
@@ -78,6 +207,7 @@ export default function Vaani(){
  <Dialog open={consentOpen} onOpenChange={setConsentOpen}><DialogContent className="consent-dialog"><DialogHeader><span className="consent-icon"><Mic size={30}/></span><DialogTitle>{t('Your voice. Your choice.','आपकी आवाज़। आपकी मर्ज़ी।')}</DialogTitle><DialogDescription>{t('Before we switch on the microphone, here’s how voice practice works.','माइक चालू करने से पहले जानें कि बोलकर अभ्यास कैसे होता है।')}</DialogDescription></DialogHeader><ul className="consent-points"><li><Check size={17}/>{t('Vaani never saves audio recordings. Audio buffers are cleared when capture stops.','वाणी रिकॉर्डिंग सेव नहीं करता। कैप्चर रुकने पर ऑडियो साफ़ होता है।')}</li><li><Check size={17}/>{t('Only your final scores are kept. Answers stay temporarily in this tab.','केवल अंतिम स्कोर सेव होते हैं। जवाब अस्थायी रूप से इसी टैब में रहते हैं।')}</li><li><Volume2 size={17}/>{t('Your browser’s speech service may send audio to its provider and require internet.','ब्राउज़र की स्पीच सेवा प्रदाता को ऑडियो भेज सकती है और इंटरनेट माँग सकती है।')}</li></ul><div className="consent-toggle"><Switch id="audio-consent" checked={consent} onCheckedChange={setConsent}/><label htmlFor="audio-consent">{t('I agree to microphone use for this visit.','मैं इस विज़िट में माइक के उपयोग से सहमत हूँ।')}</label></div><button className="btn btn-primary full" disabled={!consent} onClick={()=>{setConsentOpen(false);if(['home','practice','ivr'].includes(view))beginInterview(pendingMode);else toast(t('Consent enabled. Tap the microphone when you’re ready.','सहमति चालू है। तैयार होने पर माइक दबाएँ।'));}}><Mic size={18}/>{t('Continue with voice','आवाज़ के साथ जारी रखें')}</button><button className="subtle-link center" onClick={()=>{setConsentOpen(false);if(['home','practice','ivr'].includes(view))beginInterview('text');}}>{t('I’d rather type','मैं लिखना चाहूँगा/चाहूँगी')}</button></DialogContent></Dialog>
  <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{t('Make room for a fresh start?','नई शुरुआत करें?')}</AlertDialogTitle><AlertDialogDescription>{t('This removes scores from this browser’s private profile and device, including sample history. It cannot be undone.','इस डिवाइस के सेव स्कोर और नमूना इतिहास मिट जाएंगे। इसे वापस नहीं किया जा सकता।')}</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>{t('Keep my progress','मेरी प्रगति रखें')}</AlertDialogCancel><AlertDialogAction onClick={()=>{setSessions([]);syncedIds.current.clear();syncQueue.current=syncQueue.current.catch(()=>{}).then(()=>coachRequest('delete-history',{})).catch(()=>toast(t('Device scores cleared. Server deletion could not finish; reconnect and try again.','डिवाइस स्कोर मिटे। सर्वर से मिटाना पूरा नहीं हुआ; कनेक्ट करके फिर कोशिश करें।')));setNcsSynced(false);localStorage.removeItem('vaani.mock-ncs');toast(t('A fresh page. Your next rep starts here.','नई शुरुआत। अगला अभ्यास यहाँ से।'));}}>{t('Clear scores','स्कोर मिटाएँ')}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
  <AlertDialog open={!!confirmLeave} onOpenChange={open=>{if(!open)setConfirmLeave(null);}}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{t('Leave this practice session?','यह अभ्यास सत्र छोड़ें?')}</AlertDialogTitle><AlertDialogDescription>{t('This incomplete session will not affect your readiness score. Your current answers will be cleared.','यह अधूरा सत्र तैयारी स्कोर नहीं बदलेगा। वर्तमान जवाब मिट जाएंगे।')}</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>{t('Keep practising','अभ्यास जारी रखें')}</AlertDialogCancel><AlertDialogAction onClick={()=>{const next=confirmLeave!;setConfirmLeave(null);setAnswer('');textRef.current='';setReviews([]);setFeedback(null);setAudioMetrics(undefined);changeView(next);}}>{t('Leave session','सत्र छोड़ें')}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
- <Dialog open={badgeOpen} onOpenChange={setBadgeOpen}><DialogContent className="badge-dialog"><DialogHeader><DialogTitle>{t('You earned this next step.','यह अगला कदम आपकी मेहनत है।')}</DialogTitle><DialogDescription>{t('A shareable practice milestone. Not an NCS certification.','शेयर करने योग्य अभ्यास उपलब्धि। एनसीएस प्रमाणन नहीं।')}</DialogDescription></DialogHeader><div className="share-badge"><Award size={60}/><span>VAANI AI</span><h2>Interview Ready</h2><p>{title}</p><strong>{ready.score}/100</strong><small>3 consistent practice interviews</small></div><button className="btn btn-primary" onClick={badgeDownload}><ArrowDownToLine size={18}/>{t('Download shareable badge','शेयर करने वाला बैज डाउनलोड करें')}</button><button className="btn btn-outline" onClick={()=>{setNcsSynced(true);localStorage.setItem('vaani.mock-ncs','true');toast(t('Practice badge added to your mock NCS profile. No external data was sent.','अभ्यास बैज नमूना एनसीएस प्रोफ़ाइल में जुड़ा। बाहर कोई डेटा नहीं भेजा गया।'));}}><CheckCheck size={18}/>{ncsSynced?t('Added to mock NCS profile','नमूना प्रोफ़ाइल में जुड़ गया'):t('Add to mock NCS profile','नमूना एनसीएस प्रोफ़ाइल में जोड़ें')}</button></DialogContent></Dialog>
+ <Dialog open={badgeOpen} onOpenChange={setBadgeOpen}><DialogContent className="badge-dialog"><DialogHeader><DialogTitle>{t('You earned this next step.','यह अगला कदम आपकी मेहनत है।')}</DialogTitle><DialogDescription>{t('A shareable practice milestone. Not an NCS certification.','शेयर करने योग्य अभ्यास उपलब्धि। एनसीएस प्रमाणन नहीं।')}</DialogDescription></DialogHeader><div className="share-badge"><Award size={60}/><span>VAANI AI</span><h2>Interview Ready</h2><p>{title}</p><strong>{ready.score}/100</strong><small>3 consistent practice interviews</small></div><button className="btn btn-primary" onClick={badgeDownload}><ArrowDownToLine size={18}/>{t('Download shareable badge','शेयर करने वाला बैज डाउनलोड करें')}</button><button className="btn btn-outline" onClick={()=>{setNcsSynced(true);localStorage.setItem('vaani.mock-ncs','true');toast(t('Practice badge added to your mock NCS profile. No external data was sent.','अभ्यास बैज नमूना एनसीएस प्रोफ़ाइल में जुड़ा। बाहर कोई डेटा नहीं भेजा गया।'));}}><CheckCheck size={18}/>{ncsSynced?t('Added to mock NCS profile','नमूना प्रोफ़ाइल में जुड़ गया'):t('Add to mock NCS profile','नमूना प्रोफ़ाइल में जोड़ें')}</button></DialogContent></Dialog>
+
  </SidebarProvider>;
 }

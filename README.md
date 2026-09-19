@@ -21,6 +21,8 @@ For live LLM coaching, put an API key in the **server-side** `OPENAI_API_KEY` se
 
 - 40 clearly labelled mock vacancies across eight sectors, searchable in English or Hindi.
 - Client-side text/PDF resume extraction (5 MB, 10 pages), mock NCS import, spoken experience, skill evidence and gap list. Scanned PDFs display a clear text-paste fallback.
+
+
 - Seven-question text or voice interview, role-specific practical and STAR questions, feedback after each answer, and a final scorecard.
 - Working speech synthesis and speech recognition adapters with browser support/permission fallbacks. The browser vendor may process speech online.
 - Browser-only missed-call simulation with callback, Hindi/English keypad choice and the same spoken practice pipeline. No actual calls or phone-number collection.

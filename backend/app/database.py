@@ -7,6 +7,15 @@ DATABASE_URL = os.environ.get('DATABASE_URL','postgresql+psycopg://vaani:vaani@l
 engine = create_engine(DATABASE_URL, pool_pre_ping=True, **({'connect_args':{'check_same_thread':False}} if DATABASE_URL.startswith('sqlite') else {}))
 SessionLocal=sessionmaker(bind=engine)
 class Base(DeclarativeBase): pass
+
+class User(Base):
+    __tablename__='user'
+    id:Mapped[str]=mapped_column(String(36),primary_key=True)
+    name:Mapped[str|None]=mapped_column(String,nullable=True)
+    email:Mapped[str|None]=mapped_column(String,nullable=True)
+    emailVerified:Mapped[int|None]=mapped_column(Integer,nullable=True)
+    image:Mapped[str|None]=mapped_column(String,nullable=True)
+
 class PracticeSession(Base):
     __tablename__='practice_sessions'
     id:Mapped[str]=mapped_column(String(36),primary_key=True)
