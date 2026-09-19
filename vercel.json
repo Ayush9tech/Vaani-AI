@@ -1,5 +1,4 @@
 {
-  "framework": "vite",
-  "buildCommand": "pnpm run build:pwa && mv frontend-dist/standalone.html frontend-dist/index.html",
-  "outputDirectory": "frontend-dist"
+  "framework": "nextjs",
+  "buildCommand": "npx next build && node scripts/generate-precache.mjs .next && cp .next/precache-manifest.js public/precache-manifest.js || true"
 }
